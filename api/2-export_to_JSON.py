@@ -45,7 +45,7 @@ def employee_todo_list(employee_id):
     # Export data to JSON file
     filename = f"{employee_id}.json"
     with open(filename, 'w') as json_file:
-        json.dump(export_data, json_file, indent=4)
+        json.dump(export_data, json_file, indent=2)
 
     # Display the TODO list progress.
     print(
