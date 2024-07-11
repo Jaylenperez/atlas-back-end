@@ -20,7 +20,7 @@ def employee_todo_list(employee_id):
 
     # Fetch todos information
     todos_response = requests.get(f"{url}/todos",
-                                   params={'userId': employee_id})
+                                params={'userId': employee_id})
     todos_data = todos_response.json()
 
     # Calculate the number of completed and total tasks
