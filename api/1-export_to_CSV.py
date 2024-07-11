@@ -17,7 +17,7 @@ def export_tasks_to_csv(user_id):
     # Fetch user information
     user_response = requests.get(f"{url}/users/{user_id}")
     user_data = user_response.json()
-    employee_name = user_data.get('name')
+    employee_name = user_data.get('username')
 
     # Fetch todos information
     todos_response = requests.get(
