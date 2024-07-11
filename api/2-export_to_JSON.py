@@ -1,67 +1,36 @@
 #!/usr/bin/python3
-"""
-For a given employee ID,
-returns information about his/her TODO list progress.
-"""
+"""This module defines a script that connects to an API"""
 import json
 import requests
 import sys
 
 
 def employee_todo_list(employee_id):
-    """
-    Fetch and display the TODO list progress of an employee.
-    Also export the data to a JSON file.
-    """
-    url = "https://jsonplaceholder.typicode.com"
+    """This function exports todo list data to json"""
 
-    # Fetch user information
-    user_response = requests.get(f"{url}/users/{employee_id}")
-    user_data = user_response.json()
-    employee_name = user_data.get('name')
+    site_url = "https://jsonplaceholder.typicode.com"
+    employee_url = f"{site_url}/users/{employee_id}"
+    todo_url = f"{site_url}/todos"
+    employee_data = requests.get(employee_url).json()
+    username = employee_data.get('username')
 
-    # Fetch todos information
-    todos_response = requests.get(
-        f"{url}/todos", params={'userId': employee_id}
-    )
-    todos_data = todos_response.json()
+    todo_list = requests.get(todo_url, params={"userId": employee_id}).json()
 
-    # Calculate the number of completed and total tasks
-    total_tasks = len(todos_data)
-    done_tasks = [task for task in todos_data if task.get('completed')]
-    number_of_done_tasks = len(done_tasks)
+    data = [{
+        "task": todo['title'],
+        "completed": todo['completed'],
+        "username": username
+    } for todo in todo_list]
 
-    # Prepare data for JSON export
-    export_data = {
-        str(employee_id): sorted([
-            {
-                "task": task.get('title'),
-                "completed": task.get('completed'),
-                "username": employee_name
-            } for task in todos_data
-        ], key=lambda x: x['task'])
-    }
+    format = {str(employee_id): data}
 
-    # Export data to JSON file
-    filename = f"{employee_id}.json"
-    with open(filename, 'w') as json_file:
-        json.dump(export_data, json_file, indent=2)
-
-    # Display the TODO list progress.
-    print(
-        f"Employee {employee_name} is done with tasks"
-        f"({number_of_done_tasks}/{total_tasks}):"
-    )
-    for task in done_tasks:
-        print(f"\t {task.get('title')}")
+    file = f"{employee_id}.json"
+    with open(file, 'w') as f:
+        json.dump(format, f)
 
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python3 2-export_to_JSON.py <employee_id>")
+        print("Usage: python script.py <employee_id>")
     else:
-        try:
-            employee_id = int(sys.argv[1])
-            employee_todo_list(employee_id)
-        except ValueError:
-            print("The employee ID should be an integer.")
+        employee_todo_list(int(sys.argv[1]))
