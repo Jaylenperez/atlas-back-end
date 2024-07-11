@@ -25,19 +25,6 @@ def export_tasks_to_csv(user_id):
     )
     todos_data = todos_response.json()
 
-    # Calculate the number of completed and total tasks
-    total_tasks = len(todos_data)
-    done_tasks = [task for task in todos_data if task.get('completed')]
-    number_of_done_tasks = len(done_tasks)
-
-    # Display the TODO list progress.
-    print(
-        f"Employee {employee_name} is done with tasks"
-        f"({number_of_done_tasks}/{total_tasks}):"
-    )
-    for task in done_tasks:
-        print(f"\t {task.get('title')}")
-
     # Export to CSV.
     with open(f"{user_id}.csv", mode='w', newline='') as file:
         writer = csv.writer(file, quoting=csv.QUOTE_ALL)
