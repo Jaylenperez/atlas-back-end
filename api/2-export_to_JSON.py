@@ -7,6 +7,7 @@ import requests
 import sys
 import json
 
+
 def employee_todo_list(employee_id):
     """
     Fetch and display the TODO list progress of an employee.
