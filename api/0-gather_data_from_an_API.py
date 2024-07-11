@@ -12,14 +12,15 @@ def employee_todo_list(employee_id):
     Fetch and display the TODO list progress of an employee.
     """
     url = "https://jsonplaceholder.typicode.com"
-    
+
     # Fetch user information
     user_response = requests.get(f"{url}/users/{employee_id}")
     user_data = user_response.json()
     employee_name = user_data.get('name')
 
     # Fetch todos information
-    todos_response = requests.get(f"{url}/todos", params={'userId': employee_id})
+    todos_response = requests.get(f"{url}/todos",
+                                   params={'userId': employee_id})
     todos_data = todos_response.json()
 
     # Calculate the number of completed and total tasks
