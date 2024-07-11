@@ -8,20 +8,20 @@ import requests
 import sys
 
 
-def employee_todo_list(employee_id):
+def export_tasks_to_csv(user_id):
     """
-    Fetch and display the TODO list progress of an employee.
+    Export the user's tasks to a CSV file
     """
     url = "https://jsonplaceholder.typicode.com"
 
     # Fetch user information
-    user_response = requests.get(f"{url}/users/{employee_id}")
+    user_response = requests.get(f"{url}/users/{user_id}")
     user_data = user_response.json()
     employee_name = user_data.get('name')
 
     # Fetch todos information
     todos_response = requests.get(
-        f"{url}/todos", params={'userId': employee_id}
+        f"{url}/todos", params={'userId': user_id}
     )
     todos_data = todos_response.json()
 
@@ -39,11 +39,11 @@ def employee_todo_list(employee_id):
         print(f"\t {task.get('title')}")
 
     # Export to CSV.
-    with open(f"{employee_id}.csv", mode='w', newline='') as file:
+    with open(f"{user_id}.csv", mode='w', newline='') as file:
         writer = csv.writer(file, quoting=csv.QUOTE_ALL)
         for task in todos_data:
             writer.writerow([
-                employee_id, employee_name,
+                user_id, employee_name,
                 task.get('completed'), task.get('title')
             ])
 
@@ -53,7 +53,7 @@ if __name__ == "__main__":
         print("Usage: python3 1-export_to_CSV.py <employee_id>")
     else:
         try:
-            employee_id = int(sys.argv[1])
-            employee_todo_list(employee_id)
+            user_id = int(sys.argv[1])
+            export_tasks_to_csv(user_id)
         except ValueError:
             print("The employee ID should be an integer.")
