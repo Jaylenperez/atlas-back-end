@@ -61,7 +61,7 @@ if __name__ == "__main__":
         print("Usage: python3 0-gather_data_from_an_API.py <employee_id>")
     else:
         try:
-            employee_id = int(sys.argv[4])
+            employee_id = int(sys.argv[1])
             employee_todo_list(employee_id)
         except ValueError:
             print("The employee ID should be an integer.")
