@@ -33,13 +33,13 @@ def employee_todo_list(employee_id):
 
     # Prepare data for JSON export
     export_data = {
-        str(employee_id): [
+        str(employee_id): sorted([
             {
                 "task": task.get('title'),
                 "completed": task.get('completed'),
                 "username": employee_name
             } for task in todos_data
-        ]
+        ], key=lambda x: x['task'])
     }
 
     # Export data to JSON file
